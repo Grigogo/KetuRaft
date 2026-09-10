@@ -17,12 +17,16 @@ public class OceanCurrent : MonoBehaviour
 
     public Vector3 Velocity { get; private set; }
     public bool IsCalm => Velocity.sqrMagnitude < 0.01f;
+    
+    
 
     private float heading;        // текущий курс в градусах
     private float targetHeading;
     private float strength;
     private float targetStrength;
     private float timer;
+    private static readonly int WaveDirId = Shader.PropertyToID("_WaveDir");
+    private static readonly int WaveStrengthId = Shader.PropertyToID("_WaveStrength");
 
     private void Awake()
     {
@@ -41,6 +45,12 @@ public class OceanCurrent : MonoBehaviour
 
         float rad = heading * Mathf.Deg2Rad;
         Velocity = new Vector3(Mathf.Sin(rad), 0f, Mathf.Cos(rad)) * strength;
+        Vector2 dir = strength > 0.01f
+            ? new Vector2(Velocity.x, Velocity.z).normalized
+            : Vector2.right;
+        Shader.SetGlobalVector(WaveDirId, dir);
+        Shader.SetGlobalFloat(WaveStrengthId, strength);
+        
     }
 
     private void PickNewTarget()

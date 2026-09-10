@@ -7,6 +7,7 @@ public class InputReader : MonoBehaviour
     public Vector2 Look { get; private set; }
     public bool Sprint { get; private set; }
     public bool JumpPressed { get; private set; }
+    public bool ThrowPressed { get; private set; }
     public bool Crouch { get; private set; }
 
     private InputSystem_Actions actions;
@@ -25,6 +26,7 @@ public class InputReader : MonoBehaviour
         Look        = actions.Player.Look.ReadValue<Vector2>();
         Sprint      = actions.Player.Sprint.IsPressed();
         JumpPressed = actions.Player.Jump.WasPressedThisFrame();
+        ThrowPressed = actions.Player.Attack.WasPressedThisFrame();
         Crouch      = actions.Player.Crouch.IsPressed();
     }
 }
